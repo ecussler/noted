@@ -74,7 +74,7 @@ app.post('/api/notes', (req, res) => {
     
     const { title, text } = req.body; 
 
-    if (req.body) {
+    if (title && text) {
         const newNote = {
             title, 
             text, 
@@ -84,7 +84,7 @@ app.post('/api/notes', (req, res) => {
         readAndAppend(newNote, './db/db.json'); 
         res.json(`Note added successfully!`);
     } else {
-        res.errored(`Error in adding note`); 
+        res.error(`Error in adding note`); 
     }
 })
 
@@ -94,3 +94,19 @@ app.get('/api/notes', (req, res) => {
     console.info(`${req.method} request received for notes`); 
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data))); 
 });
+
+app.delete('/api/notes/:id', (req, res) => {
+    console.info(`${req.method} request has been received to delete note`); 
+    
+    const { id } = req.params; 
+    readFromFile('./db/db.json').then((data) => {
+        const notes = JSON.parse(data).filter(note => {
+            if (note.id !== id) {
+                return true
+            } 
+            return false; 
+        })
+        return writeToFile('./db/db.json', notes)
+    }).then(() => res.json({success: true})) 
+    .catch((err) => res.json(err))
+})
