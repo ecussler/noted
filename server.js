@@ -28,10 +28,25 @@ app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
 );
 
+
+/**
+ * Function to write input into the set file
+ * @param {*} destination destination of the information (typically the database)
+ * @param {*} content content of note
+ */
+
 const writeToFile = (destination, content) => {
     fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
     err ? console.error(err) : console.info(`\nData written to ${destination}`)); 
 }
+
+
+
+/**
+ * Function to read database information and append new data
+ * @param {*} content content to be written read and appended to the database array
+ * @param {*} file where to read and append data
+ */
 
 const readAndAppend = (content, file) => {
     fs.readFile(file, 'utf8', (err, data) => {
@@ -45,6 +60,8 @@ const readAndAppend = (content, file) => {
     })
 }
 
+
+// POST request to add notes
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request has been received to add note`); 
     
