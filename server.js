@@ -95,6 +95,8 @@ app.get('/api/notes', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data))); 
 });
 
+
+// DELETE request to remove note from db.json
 app.delete('/api/notes/:id', (req, res) => {
     console.info(`${req.method} request has been received to delete note`); 
     
